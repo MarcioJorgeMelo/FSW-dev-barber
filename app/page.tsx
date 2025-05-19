@@ -7,11 +7,13 @@ import bannerImage from "@/public/bannerfswbarber.png"
 import cabeloIcon from "@/public/heroicons_scissors-20-solid.svg"
 import barbaIcon from "@/public/mdi_mustache.svg"
 import acabamentoIcon from "@/public/mdi_razor-double-edge.svg"
+import sobrancelhaIcon from "@/public/mingcute_eyebrow-fill.svg"
+import massagemIcon from "@/public/ph_towel-fill.svg"
+import hidratacaoIcon from "@/public/hugeicons_shampoo.svg"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { db } from "@/lib/prisma"
 import BarbershopItem from "@/components/barbershop-item"
+import BookingItem from "@/components/bookingItem"
 
 const Home = async () => {
   const barbershops = await db.barberShop.findMany({})
@@ -66,17 +68,27 @@ const Home = async () => {
 
           <Button className="gap-2" variant="secondary">
             <Image
-              src={cabeloIcon}
-              alt="Corte de cabelo"
+              src={sobrancelhaIcon}
+              alt="Sobrancelha"
               width={16}
               height={16}
             />
-            Cabelo
+            Sobrancelha
           </Button>
 
           <Button className="gap-2" variant="secondary">
-            <Image src={barbaIcon} alt="Barba" width={16} height={16} />
-            Barba
+            <Image src={massagemIcon} alt="Massagem" width={16} height={16} />
+            Massagem
+          </Button>
+
+          <Button className="gap-2" variant="secondary">
+            <Image
+              src={hidratacaoIcon}
+              alt="Hidratação"
+              width={16}
+              height={16}
+            />
+            Hidratação
           </Button>
         </div>
 
@@ -89,35 +101,7 @@ const Home = async () => {
           />
         </div>
 
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Agendamentos
-        </h2>
-
-        <Card>
-          <CardContent className="flex justify-between p-0">
-            <div className="flex flex-col gap-2 py-5 pl-5">
-              <Badge className="w-fit">Confirmado</Badge>
-
-              <h3 className="font-semibold">Corte de Cabelo</h3>
-
-              <div className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarImage src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png" />
-                </Avatar>
-
-                <p className="text-sm">Barbearia FSW</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-center border-l-2 border-solid px-5">
-              <p className="text-sm">Maio</p>
-
-              <h3 className="text-2xl">19</h3>
-
-              <p className="text-sm">19:45</p>
-            </div>
-          </CardContent>
-        </Card>
+        <BookingItem />
 
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
           Recomendados
