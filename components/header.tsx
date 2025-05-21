@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Card, CardContent } from "./ui/card"
-import LogoImg from "@/public/logofswbarber.png"
+import LogoImg from "@/public/logofswbarber.svg"
 import { Button } from "./ui/button"
 import { MenuIcon } from "lucide-react"
 
