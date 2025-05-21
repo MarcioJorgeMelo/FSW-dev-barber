@@ -4,16 +4,10 @@ import { Input } from "@/components/ui/input"
 import { Search } from "lucide-react"
 import Image from "next/image"
 import bannerImage from "@/public/bannerfswbarber.svg"
-import cabeloIcon from "@/public/heroicons_scissors-20-solid.svg"
-import barbaIcon from "@/public/mdi_mustache.svg"
-import acabamentoIcon from "@/public/mdi_razor-double-edge.svg"
-import sobrancelhaIcon from "@/public/mingcute_eyebrow-fill.svg"
-import massagemIcon from "@/public/ph_towel-fill.svg"
-import hidratacaoIcon from "@/public/hugeicons_shampoo.svg"
-import { Card, CardContent } from "@/components/ui/card"
 import { db } from "@/lib/prisma"
 import BarbershopItem from "@/components/barbershop-item"
 import BookingItem from "@/components/bookingItem"
+import { QuickSearchOptions } from "./_constants/search"
 
 const Home = async () => {
   const barbershops = await db.barberShop.findMany({})
@@ -41,55 +35,17 @@ const Home = async () => {
         </div>
 
         <div className="mt-6 flex gap-3 overflow-x-scroll [&::-webkit-scrollbar]:hidden">
-          <Button className="gap-2" variant="secondary">
-            <Image
-              src={cabeloIcon}
-              alt="Corte de cabelo"
-              width={16}
-              height={16}
-            />
-            Cabelo
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image src={barbaIcon} alt="Barba" width={16} height={16} />
-            Barba
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image
-              src={acabamentoIcon}
-              alt="Acabamento"
-              width={16}
-              height={16}
-            />
-            Acabamento
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image
-              src={sobrancelhaIcon}
-              alt="Sobrancelha"
-              width={16}
-              height={16}
-            />
-            Sobrancelha
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image src={massagemIcon} alt="Massagem" width={16} height={16} />
-            Massagem
-          </Button>
-
-          <Button className="gap-2" variant="secondary">
-            <Image
-              src={hidratacaoIcon}
-              alt="Hidratação"
-              width={16}
-              height={16}
-            />
-            Hidratação
-          </Button>
+          {QuickSearchOptions.map((option) => (
+            <Button className="gap-2" variant="secondary" key={option.title}>
+              <Image
+                src={option.imageUrl}
+                alt={option.title}
+                width={16}
+                height={16}
+              />
+              {option.title}
+            </Button>
+          ))}
         </div>
 
         <div className="relative mt-6 h-[150px] w-full">
@@ -123,16 +79,6 @@ const Home = async () => {
           ))}
         </div>
       </div>
-
-      <footer>
-        <Card>
-          <CardContent className="px-5 py-6">
-            <p className="text-sm text-gray-400">
-              © 2023 Copyright <span className="font-bold">FSW Barber</span>
-            </p>
-          </CardContent>
-        </Card>
-      </footer>
     </div>
   )
 }
