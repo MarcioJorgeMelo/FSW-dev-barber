@@ -5,13 +5,14 @@ import Image from "next/image"
 import bannerImage from "@/public/bannerfswbarber.svg"
 import { db } from "@/lib/prisma"
 import BarbershopItem from "@/components/barbershop-item"
-import BookingItem from "@/components/bookingItem"
+import BookingItem from "@/components/booking-item"
 import { QuickSearchOptions } from "./_constants/search"
 import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
+import { getConfirmedBookings } from "./_data/get-confirmed-bookings"
 
 const Home = async () => {
   const session = await getServerSession(authOptions)
@@ -22,27 +23,7 @@ const Home = async () => {
       name: "desc",
     },
   })
-  const confirmedBookings = session?.user
-    ? await db.booking.findMany({
-        where: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          userId: (session.user as any).id,
-          date: {
-            gte: new Date(),
-          },
-        },
-        include: {
-          service: {
-            include: {
-              barberShop: true,
-            },
-          },
-        },
-        orderBy: {
-          date: "asc",
-        },
-      })
-    : []
+  const confirmedBookings = await getConfirmedBookings()
 
   return (
     <div>
@@ -99,15 +80,22 @@ const Home = async () => {
           />
         </div>
 
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Agendamentos
-        </h2>
+        {confirmedBookings.length > 0 && (
+          <>
+            <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+              Agendamentos
+            </h2>
 
-        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking) => (
-            <BookingItem booking={booking} key={booking.id} />
-          ))}
-        </div>
+            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking) => (
+                <BookingItem
+                  booking={JSON.parse(JSON.stringify(booking))}
+                  key={booking.id}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
           Recomendados
