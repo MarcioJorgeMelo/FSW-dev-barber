@@ -5,7 +5,7 @@ import Image from "next/image"
 import bannerImage from "@/public/bannerfswbarber.svg"
 import { db } from "@/lib/prisma"
 import BarbershopItem from "@/components/barbershop-item"
-import BookingItem from "@/components/bookingItem"
+import BookingItem from "@/components/booking-item"
 import { QuickSearchOptions } from "./_constants/search"
 import Link from "next/link"
 import { getServerSession } from "next-auth"
@@ -99,15 +99,22 @@ const Home = async () => {
           />
         </div>
 
-        <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
-          Agendamentos
-        </h2>
+        {confirmedBookings.length > 0 && (
+          <>
+            <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
+              Agendamentos
+            </h2>
 
-        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-          {confirmedBookings.map((booking) => (
-            <BookingItem booking={booking} key={booking.id} />
-          ))}
-        </div>
+            <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+              {confirmedBookings.map((booking) => (
+                <BookingItem
+                  booking={JSON.parse(JSON.stringify(booking))}
+                  key={booking.id}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         <h2 className="mb-3 mt-6 text-xs font-bold uppercase text-gray-400">
           Recomendados
