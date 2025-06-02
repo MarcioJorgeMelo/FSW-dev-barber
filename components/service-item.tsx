@@ -16,6 +16,7 @@ import { getBookings } from "@/app/_actions/get-bookings"
 import { Dialog, DialogContent } from "./ui/dialog"
 import SignInDialog from "./sign-in-dialog"
 import BookingSummary from "./booking-summary"
+import { useRouter } from "next/navigation"
 
 interface ServiceItemProps {
   service: BarberShopService
@@ -94,6 +95,8 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
     })
   }, [selectedDay, selectedTime])
 
+  const router = useRouter()
+
   const { data } = useSession()
 
   useEffect(() => {
@@ -147,7 +150,12 @@ const ServiceItem = ({ service, barberShop }: ServiceItemProps) => {
 
       handleBookingSheetOpenChange()
 
-      toast.success("Reserva criada com sucesso!")
+      toast.success("Reserva criada com sucesso!", {
+        action: {
+          label: "Ver agendamentos",
+          onClick: () => router.push("/bookings"),
+        },
+      })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Erro ao criar reserva!")
